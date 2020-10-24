@@ -1,3 +1,8 @@
+# ACM Hackathon Website Backend
+- Connected to AWS 
+- Utilizes severless, Dynamo, etc.
+
+
 Must configure ur own AWS account
 - info on that can be found at : https://www.serverless.com/framework/docs/providers/aws/guide/credentials
 - basically create an AWS acc
