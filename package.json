@@ -1,0 +1,22 @@
+{
+  "name": "acmhackathon-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "sls offline start --port 3000",
+    "deploy": "sls deploy --aws-profile acmHackathon",
+    "deployNormal": "sls deploy",
+    "local_lambda": "sls invoke local -f hello"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-offline": "^6.8.0"
+  },
+  "dependencies": {
+    "moment": "^2.29.1",
+    "serverless-dynamodb-local": "^0.2.39",
+    "uuid": "^8.3.1"
+  }
+}

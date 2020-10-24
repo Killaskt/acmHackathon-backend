@@ -1,0 +1,42 @@
+learning yml
+- all key value pairs 
+- similar to json
+
+json:
+
+{
+    "person": {
+        "name": "Jane Doe",
+        "age": 21,
+        "salary": 5000.0,
+        "isManager": true,
+    },
+    "customer": {
+        "companies": ["X", "Y", "Z"]
+    }
+    "friends": [
+     {"id": 1, "name": "Jane"},
+     {"id": 2, "name": "doe"}
+    ]
+}
+
+YAML:
+
+person:
+ name: "Jane Doe"
+ age: 21
+ salary: 5000.0
+ isManager: true
+
+customer:
+ companies:
+  - "X"
+  - "Y"
+  - "Z"
+
+friends: 
+ - {"id": 1, "name": "Jane"}
+ - id: 2
+   name: "Doe"
+ - id: 3
+   name: "John"
