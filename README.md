@@ -21,9 +21,9 @@ To Deploy:
 sls deploy --aws-profile acmHackathon
 
 
-Deploying DynamoDB:
 
 
+### Extra Info about code:
 
 ---- endpoints ----
 - saveMember (POST)
