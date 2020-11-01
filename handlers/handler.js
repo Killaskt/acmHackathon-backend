@@ -33,6 +33,8 @@ try {
 // creates new instance of DynamoDB
 const dDB = new AWS.DynamoDB.DocumentClient(options);
 
+const tablename = process.env.MEMBERS;
+
 module.exports = {
   // evt - event, runs any event specified in command to run function
   // ex. sls invoke local -f hello -p event.json
@@ -40,59 +42,87 @@ module.exports = {
   handler: async (evt, ctx) => {
     console.log(evt)
     console.log(ctx)
+
     return {
       statusCode: 200,
       body: JSON.stringify({
         "name": "nodejs developer",
-        "message": "I am from jobs handler",
+        "message": "I am from the handler",
       })
     }
   },
+
   newMember: async (evt, ctx) => {
     // function adds new members to db
-
+    
     const data = JSON.parse(evt.body);
+    const email = data.email;
     const timestamp = new Date();
     const formattedTime = moment(timestamp).format();
 
-
-    const newMem = {
-      TableName: process.env.MEMBERS,
-      Item: {
-        ID: uuid(),
-        Email: data.Email,
-        FirstName: data.FName ? data.FName : '',
-        LastName: data.LName ? data.LName : '',
-        School: data.School ? data.School : '',
-        GradeLevel: data.Grade ? data.Grade : '',
-        Skills: data.Skills ? data.Skills : '',
-        // wants a random group chosen for them
-        WantsRandom: data.Random ? data.Random : 0,
-        CreatedAt: formattedTime
-      }
+    // secondary index query to check if email exists 
+    let query_params = {
+      TableName: tablename,
+      IndexName: "EmailIndex",
+      KeyConditionExpression: "#key = :em",
+      ExpressionAttributeNames: {
+        "#key": "Email",
+      },
+      ExpressionAttributeValues: {
+        ":em": data.Email,
+      },
     }
 
-    try {
-      // console.log(data, data.Email)
-      const res = await dDB.put(newMem).promise();
-      console.log(res);
+    let result = await dDB.query(query_params).promise();
 
-      // TODO: Add Twilio command, which sends a email to user w/ Discord Link!
+    if (!result.Items[0]) {
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify(newMem.Item)
+      const newMem = {
+        TableName: process.env.MEMBERS,
+        Item: {
+          ID: uuid(),
+          Email: data.Email,
+          FirstName: data.FName ? data.FName : '',
+          LastName: data.LName ? data.LName : '',
+          School: data.School ? data.School : '',
+          GradeLevel: data.Grade ? data.Grade : '',
+          Skills: data.Skills ? data.Skills : '',
+          // wants a random group chosen for them
+          WantsRandom: data.Random ? data.Random : 0,
+          CreatedAt: formattedTime
+        }
       }
       
-    } catch (e) {
-      console.log('DYNAMODB PUT ERROR: ', e);
+      try {
+        // console.log(data, data.Email)
+        const res = await dDB.put(newMem).promise();
+        console.log(res);
+        
+        // TODO: Add Twilio command, which sends a email to user w/ Discord Link!
+        
+        return {
+          statusCode: 200,
+          body: JSON.stringify(newMem.Item)
+        }
+        
+      } catch (e) {
+        console.log('DYNAMODB PUT ERROR: ', e);
+        return {
+          statusCode: 500,
+          body: JSON.stringify({
+            Error: "DynamoDB Save Error",
+            Message: e
+          })
+        }
+      }
+    } else {
       return {
-        statusCode: 500,
+        statusCode: 403,
         body: JSON.stringify({
-          Error: "DynamoDB Save Error",
+          Error: "Email Already Exists!",
           Message: e
         })
-      }
+      };
     }
 
   }, 
