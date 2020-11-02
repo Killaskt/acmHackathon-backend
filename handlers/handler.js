@@ -72,6 +72,7 @@ module.exports = {
       ExpressionAttributeValues: {
         ":em": data.Email,
       },
+    }
 
 
     const newMem = {
