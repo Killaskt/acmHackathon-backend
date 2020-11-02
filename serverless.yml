@@ -18,7 +18,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: us-east-2
-  stage: prod
+  stage: dev
   profile: acmHackathon
   # setting environmnet variable for tables
   environment:
