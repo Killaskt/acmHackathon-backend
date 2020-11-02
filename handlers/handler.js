@@ -60,6 +60,7 @@ module.exports = {
     const timestamp = new Date();
     const formattedTime = moment(timestamp).format();
 
+
     // secondary index query to check if email exists 
     let query_params = {
       TableName: tablename,
@@ -71,6 +72,30 @@ module.exports = {
       ExpressionAttributeValues: {
         ":em": data.Email,
       },
+
+
+    const newMem = {
+      TableName: process.env.MEMBERS,
+      Item: {
+        ID: uuid(),
+        Email: data.Email,
+        FirstName: data.FName ? data.FName : '',
+        LastName: data.LName ? data.LName : '',
+        Gender: data.Gender ? data.Gender : '',
+        School: data.School ? data.School : '',
+        // current level of study
+        GradeLevel: data.Grade ? data.Grade : '',
+        Major: data.Major ? data.Major : '',
+        Skills: data.Skills ? data.Skills : '',
+        // wants a random group chosen for them
+        WantsRandom: data.Random ? data.Random : 0,
+        // required, for only wayne state students
+        AccessID: data.AccessID ? data.AccessID : '',
+        // required, 18 and older
+        Age: data.Age ? data.Age : '',
+        CreatedAt: formattedTime
+      }
+
     }
 
     let result = await dDB.query(query_params).promise();
