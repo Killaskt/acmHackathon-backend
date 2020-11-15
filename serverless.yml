@@ -13,7 +13,7 @@ custom:
 
 frameworkVersion: '2'
 
-# AWS serverless configurations
+# AWS serverless configurations f
 provider:
   name: aws
   runtime: nodejs12.x
@@ -33,6 +33,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
+        - ses:*
       Resource: "*"
 
 # initializing dev dependencies we have

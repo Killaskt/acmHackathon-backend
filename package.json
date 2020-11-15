@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "moment": "^2.29.1",
+    "nodemailer": "^6.4.15",
     "serverless-dynamodb-local": "^0.2.39",
     "uuid": "^8.3.1"
   }
