@@ -127,7 +127,7 @@ module.exports = {
         
         // TODO: Add nodemailer command, which sends a email to user w/ Discord Link!
         // let email_sent = await send_email('thegimreper@gmail.com');
-        let email_sent = await emailer.email([data.Email], 'random', 'nolo dolo yolo great now reformat this');
+        let email_sent = await emailer.email([data.Email], 'WSU Nexus Registration!', 'nolo dolo yolo great now reformat this');
 
         if (!email_sent) {
           console.log(email_sent)
@@ -146,7 +146,7 @@ module.exports = {
         });
       }
     } else {
-      return response.Build(200, {
+      return response.Build(403, {
         Error: "Email Already Exists!",
         Message: result.Items[0]
       });
